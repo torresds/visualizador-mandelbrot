@@ -1,0 +1,25 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Rubik:ital,wght@0,300..900;1,300..900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <title>Mandelbrot</title>
+  </head>
+  <body>
+    <div class="wrapper">
+      <h1>Conjunto de Mandelbrot</h1>
+      <canvas id="visualizer"></canvas>
+      <div class="range-wrapper">
+        <label for="iterations" id="iterations-label">Iterações (100):</label>
+        <input type="range" min="10" max="500" start="0" value="100" id="iterations">
+      </div>
+      <span></span>
+    </div>
+    <script type="module" src="/main.js"></script>
+  </body>
+</html>
