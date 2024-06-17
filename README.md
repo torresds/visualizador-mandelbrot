@@ -1,6 +1,6 @@
 # 🌌 Mandelbrot
 <p align="center">
-<img src="https://i.ibb.co/xs8j5qP/Recording2024-06-16225851-ezgif-com-video-to-gif-converter.gif">
+<img src="https://github.com/torresds/visualizador-mandelbrot/blob/main/preview.gif?raw=true">
 </p>
 
 ## ✨ Funcionalidades
