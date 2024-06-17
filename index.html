@@ -10,16 +10,26 @@
     <link rel="stylesheet" href="style.css">
     <title>Mandelbrot</title>
   </head>
+  
   <body>
-    <div class="wrapper">
-      <h1>Conjunto de Mandelbrot</h1>
-      <canvas id="visualizer"></canvas>
-      <div class="range-wrapper">
-        <label for="iterations" id="iterations-label">Iterações (100):</label>
-        <input type="range" min="10" max="500" start="0" value="100" id="iterations">
+    <dialog id="pallete-dialog">
+      <h3>Escolha a paleta de cores:</h3>
+      <div class="list-palletes" id="list-p">
       </div>
-      <span></span>
+    </dialog>
+    <div class="wrapper">
+      <h1>Visualizador do Conjunto Mandelbrot</h1>
+      <canvas id="visualizer"></canvas>
+      <div class="settings">
+        <div class="range-wrapper">
+          <label for="iterations" id="iterations-label">Iterações (100):</label>
+          <input class="slider" type="range" min="10" max="500" start="0" value="100" id="iterations">
+        </div>
+        <a href="#" id="change-colors">🎨 Paleta de Cores</a>
+      </div>
+      <a href="https://github.com/torresds/visualizador-mandelbrot">Repositório no Github</span>
     </div>
     <script type="module" src="/main.js"></script>
+    <script type="module" src="/updatePallete.js"></script>
   </body>
 </html>

@@ -1,3 +1,5 @@
+import { colorPalettes } from "./colorPallettes";
+
 const canva = document.getElementById("visualizer");
 const slider = document.getElementById("iterations");
 const sliderLabel = document.getElementById("iterations-label");
@@ -5,11 +7,7 @@ const ctx = canva.getContext("2d");
 const width = canva.width;
 const height = canva.height;
 
-const colorPalette = [
-  "#000000", "#1f1f1f", "#3f3f3f", "#5f5f5f", "#7f7f7f", "#9f9f9f", 
-  "#bfbfbf", "#dfdfdf", "#ff0000", "#ff1f1f", "#ff3f3f", "#ff5f5f", 
-  "#ff7f7f", "#ff9f9f", "#ffbfbf", "#ffdfdf", "#ffffff"
-];
+const getColorPaletteIndex = () => parseInt(localStorage.getItem("colorPalleteIndex")) || 0;
 
 
 let maxIterations = parseInt(slider.value, 10);
@@ -38,6 +36,7 @@ const getColor = m => {
   if (m === maxIterations) {
     return [0, 0, 0];
   }
+  const colorPalette = colorPalettes[getColorPaletteIndex()].colors;
   const colorIndex = Math.floor((m / maxIterations) * (colorPalette.length - 1));
   const hexCode = parseInt(colorPalette[colorIndex].slice(1), 16);
   const rgb = [(hexCode >> 16) & 255, (hexCode >> 8) & 255, hexCode & 255];
