@@ -5,6 +5,13 @@ const ctx = canva.getContext("2d");
 const width = canva.width;
 const height = canva.height;
 
+const colorPalette = [
+  "#000000", "#1f1f1f", "#3f3f3f", "#5f5f5f", "#7f7f7f", "#9f9f9f", 
+  "#bfbfbf", "#dfdfdf", "#ff0000", "#ff1f1f", "#ff3f3f", "#ff5f5f", 
+  "#ff7f7f", "#ff9f9f", "#ffbfbf", "#ffdfdf", "#ffffff"
+];
+
+
 let maxIterations = parseInt(slider.value, 10);
 let currentZoom = 200;
 let currentPanX = 0;
@@ -27,6 +34,16 @@ const mandelbrot = c => {
   return iteration;
 };
 
+const getColor = m => {
+  if (m === maxIterations) {
+    return [0, 0, 0];
+  }
+  const colorIndex = Math.floor((m / maxIterations) * (colorPalette.length - 1));
+  const hexCode = parseInt(colorPalette[colorIndex].slice(1), 16);
+  const rgb = [(hexCode >> 16) & 255, (hexCode >> 8) & 255, hexCode & 255];
+  return rgb;
+}
+
 const draw = (zoom, panX, panY) => {
   const imageData = ctx.createImageData(width, height);
   const data = imageData.data;
@@ -39,7 +56,7 @@ const draw = (zoom, panX, panY) => {
       };
       const m = mandelbrot(c);
 
-      const color = m === maxIterations ? [0, 0, 0] : hslToRgb(Math.log(m) / Math.log(maxIterations) * 360 / 360, 1, 0.5);
+      const color = getColor(m);
       const index = (x + y * width) * 4;
       [data[index], data[index + 1], data[index + 2], data[index + 3]] = [...color, 255];
     }
@@ -48,22 +65,6 @@ const draw = (zoom, panX, panY) => {
   ctx.putImageData(imageData, 0, 0);
 };
 
-const hslToRgb = (h, s, l) => {
-  if (s === 0) return [l, l, l].map(v => Math.round(v * 255));
-
-  const hue2rgb = (p, q, t) => {
-    if (t < 0) t += 1;
-    if (t > 1) t -= 1;
-    if (t < 1 / 6) return p + (q - p) * 6 * t;
-    if (t < 1 / 2) return q;
-    if (t < 2 / 3) return p + (q - p) * (2 / 3 - t) * 6;
-    return p;
-  };
-
-  const q = l < 0.5 ? l * (1 + s) : l + s - l * s;
-  const p = 2 * l - q;
-  return [hue2rgb(p, q, h + 1 / 3), hue2rgb(p, q, h), hue2rgb(p, q, h - 1 / 3)].map(v => Math.round(v * 255));
-};
 
 const animate = () => {
   draw(currentZoom, currentPanX, currentPanY);
