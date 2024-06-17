@@ -13,6 +13,7 @@ let currentPanY = 0;
 let startX;
 let startY;
 let isDragging = false;
+let initialPinchDistance = null;
 
 const mandelbrot = c => {
   let x = 0, y = 0, iteration = 0;
@@ -26,8 +27,8 @@ const mandelbrot = c => {
 };
 
 const draw = (zoom, panX, panY) => {
-  const renderWidth = width ;
-  const renderHeight = height ;
+  const renderWidth = width;
+  const renderHeight = height;
   const imageData = ctx.createImageData(renderWidth, renderHeight);
   const data = imageData.data;
 
@@ -129,14 +130,21 @@ canva.addEventListener('mouseout', function () {
 });
 
 canva.addEventListener('touchstart', function (event) {
+  event.preventDefault();
   if (event.touches.length === 1) {
     startX = event.touches[0].pageX;
     startY = event.touches[0].pageY;
     isDragging = true;
+  } else if (event.touches.length === 2) {
+    initialPinchDistance = Math.hypot(
+      event.touches[0].pageX - event.touches[1].pageX,
+      event.touches[0].pageY - event.touches[1].pageY
+    );
   }
 });
 
 canva.addEventListener('touchmove', function (event) {
+  event.preventDefault();
   if (isDragging && event.touches.length === 1) {
     const diffX = (event.touches[0].pageX - startX) / currentZoom;
     const diffY = (event.touches[0].pageY - startY) / currentZoom;
@@ -145,11 +153,22 @@ canva.addEventListener('touchmove', function (event) {
     startX = event.touches[0].pageX;
     startY = event.touches[0].pageY;
     draw(currentZoom, currentPanX, currentPanY);
+  } else if (event.touches.length === 2) {
+    const newPinchDistance = Math.hypot(
+      event.touches[0].pageX - event.touches[1].pageX,
+      event.touches[0].pageY - event.touches[1].pageY
+    );
+    const pinchRatio = newPinchDistance / initialPinchDistance;
+    currentZoom *= pinchRatio;
+    initialPinchDistance = newPinchDistance;
+    draw(currentZoom, currentPanX, currentPanY);
   }
 });
 
-canva.addEventListener('touchend', function () {
+canva.addEventListener('touchend', function (event) {
+  event.preventDefault();
   isDragging = false;
+  initialPinchDistance = null;
 });
 
 slider.oninput = function () {
